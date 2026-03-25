@@ -1,0 +1,70 @@
+<?php
+    include 'connection.php';
+    session_start();
+
+    $admin_id = $_SESSION['admin_id'];
+    if(!isset($admin_id)){
+        header('location:login.php');
+    }
+    if(isset($_POST['logout'])){
+        session_destroy();
+        header('location:login.php');
+    }
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Handlee&family=Hind+Mysuru:wght@300;400;500;600;700&family=Indie+Flower&family=Julius+Sans+One&family=Lobster&family=Neucha&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Handlee&family=Hind+Mysuru:wght@300;400;500;600;700&family=Indie+Flower&family=Julius+Sans+One&family=Lobster&family=Neucha&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Archivo+Black&family=Bebas+Neue&family=Bungee+Spice&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Dosis:wght@200..800&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&family=Paytone+One&family=Play:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Russo+One&family=Saira:ital,wght@0,100..900;1,100..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Spicy+Rice&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Faculty+Glyphic&family=Kavoon&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+
+<title>admin panel</title>
+</head>
+<body>
+    <?php include 'admin_header.php'; ?>
+    <div class="box-container">
+            <?php
+                $select_products = mysqli_query($conn, "SELECT * FROM `gigs`") or die('query failed');
+                if(mysqli_num_rows($select_products) > 0){
+                    while($fetch_products = mysqli_fetch_assoc($select_products)){
+            ?>
+            <div class="box">
+                <img src="images/<?php echo $fetch_products['image']; ?>" alt="">
+                <h3><?php echo $fetch_products['name']; ?></h3>
+                <p><?php echo $fetch_products['product_detail']; ?></p>
+                <p>Location: <span><?php echo $fetch_products['location']; ?></span></p>
+                <p>Category: <span><?php echo $fetch_products['category']; ?></span></p>
+            </div>
+            <?php
+                    }
+                } else {
+                    echo '<p class="empty">no products added yet!</p>';
+                }
+            ?>
+<script type="text/javascript" src="script.js"></script>
+</body>
+</html>
